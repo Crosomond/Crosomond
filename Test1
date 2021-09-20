@@ -1,0 +1,30 @@
+#include "stm32f4xx.h"
+void SystemInit() {
+		(*((int*)0xE000ED88))|=0x0F00000;
+}
+
+void delayy(){
+	int dummy=0xFFFFFF;
+	while(dummy--);
+}
+
+int main (){
+	unsigned char disp[10]={0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F};
+  int count1 = 1;
+	//int count2 = 1;
+	RCC->AHB1ENR = 0xA; //1010, Port B and Port D are clocked
+	GPIOD->MODER = 0x00005555;
+	GPIOB->MODER = 0x00000055;
+	while(1){
+	  	
+		GPIOB->ODR = (1<<1);
+		GPIOD->ODR = disp[count1];
+	  delayy();
+		count1++;
+		 if(count1>=10)
+			 count1=0;
+		//GPIOB->ODR = (1<<0);
+		//GPIOD->ODR = disp[count2];
+		}
+	
+}
